@@ -4,23 +4,32 @@
   JQDom = require("jqdom");
 
   HTMLParser = (function() {
-    function HTMLParser(html) {
-      this.html = html;
-      this.jQuery = JQDom(this.html);
+    function HTMLParser(selectors) {
+      this.selectors = selectors;
     }
 
-    HTMLParser.prototype.parseAll = function(selectors) {
-      var data, selector, selectorId;
+    HTMLParser.prototype.setHTML = function(html) {
+      this.html = html;
+      return this.jQuery = JQDom(this.html);
+    };
+
+    HTMLParser.prototype.parse = function(html) {
+      var data, selector, selectorId, _ref;
+      this.setHTML(html);
       data = {};
-      for (selectorId in selectors) {
-        selector = selectors[selectorId];
-        data[selectorId] = this.parse(selector);
+      _ref = this.selectors;
+      for (selectorId in _ref) {
+        selector = _ref[selectorId];
+        data[selectorId] = this.getDataForSelector(selector);
       }
       return data;
     };
 
-    HTMLParser.prototype.parse = function(config) {
+    HTMLParser.prototype.getDataForSelector = function(config) {
       var $el, val;
+      if (!(this.html && this.jQuery)) {
+        throw new Error("HTML is not defined");
+      }
       if (typeof config === "string") {
         config = {
           selector: config
