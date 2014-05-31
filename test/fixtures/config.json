@@ -1,0 +1,28 @@
+{
+  "basic": ".basic",
+  "complex": {
+    "selector": ".complex"
+  },
+  "ignore": {
+    "selector": ".ignore-container",
+    "ignore": ".ignore"
+  },
+  "attribute": {
+    "selector": ".attribute",
+    "attribute": "src"
+  },
+  "regex": {
+    "selector": ".regex",
+    "regex": "This is the content: (.*)"
+  },
+  "attribute_regex": {
+    "selector": "body > img.attribute",
+    "attribute": "src",
+    "regex": "assets/(.*).jpg"
+  },
+  "ignore_regex": {
+    "selector": ".nested",
+    "ignore": ".ignore-1, .ignore-2",
+    "regex": "But the following part should show: ([A-Z +]+)"
+  }
+}
