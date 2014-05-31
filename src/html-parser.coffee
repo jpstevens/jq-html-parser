@@ -2,17 +2,24 @@ JQDom = require "jqdom"
 
 class HTMLParser
 
-  constructor: (@html) ->
+  constructor: (@selectors) ->
+    # ...
+
+  setHTML: (@html) ->
     @jQuery = JQDom @html
 
-  parseAll: (selectors) ->
+  parse: (html) ->
+    # set the HTML that needs to be parsed
+    @setHTML(html)
+    # parse the HTML data, for the specified selectors
     data = {}
-    for selectorId, selector of selectors
-      data[selectorId] = @parse selector
+    for selectorId, selector of @selectors
+      data[selectorId] = @getDataForSelector selector
     data
 
-    # return promise
-  parse: (config) ->
+  getDataForSelector: (config) ->
+    # html and jQuery must have been set before getting data
+    throw new Error ("HTML is not defined") unless ( @html and @jQuery )
     # handle the case where parseSelector is called with a selector string
     if typeof config is "string" then config = { selector: config }
     # get the element

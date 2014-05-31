@@ -33,8 +33,8 @@ request.get(url, function(err, res, body){
   var parser, selectors;
 
   // parse body
-  parser    = new Parser(body);
-  selectors = parser.parseAll(config);
+  parser    = new Parser(config);
+  selectors = parser.parse(body);
 
   console.log(selectors.title); // "Google"
   console.log(selectors.logo);  // "/images/srpr/logo11w.png"
