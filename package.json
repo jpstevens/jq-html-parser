@@ -1,6 +1,6 @@
 {
   "name": "jq-html-parser",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A jQuery powered parser for extracting text (strings) from HTML documents",
   "main": "dist/html-parser.js",
   "dependencies": {
