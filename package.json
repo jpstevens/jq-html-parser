@@ -1,6 +1,6 @@
 {
-  "name": "html-parser",
-  "version": "0.0.1",
+  "name": "jq-html-parser",
+  "version": "0.0.2",
   "description": "A jQuery powered parser for extracting text (strings) from HTML documents",
   "main": "dist/html-parser.js",
   "dependencies": {
@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jpstevens/jqdom.git"
+    "url": "https://github.com/jpstevens/html-parser.git"
   },
   "keywords": ["jquery", "html", "parser", "parse"],
   "author": "Jack Stevens",
