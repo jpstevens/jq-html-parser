@@ -1,4 +1,4 @@
-html-parser
+jq-html-parser
 ---
 A jQuery powered parser for extracting text (strings) from HTML documents
 
@@ -8,7 +8,7 @@ Example Usage:
 var Parser, request, config, url;
 
 // npm dependencies
-Parser  = require("html-parser");
+Parser  = require("jq-html-parser");
 request = require("request");
 
 // config, etc.
