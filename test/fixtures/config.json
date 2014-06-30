@@ -24,5 +24,26 @@
     "selector": ".nested",
     "ignore": ".ignore-1, .ignore-2",
     "regex": "But the following part should show: ([A-Z +]+)"
+  },
+  "multiple_default": {
+    "selector": ".multiple-item"
+  },
+  "multiple_false": {
+    "selector": ".multiple-item",
+    "multiple": false
+  },
+  "multiple_false_complex": {
+    "selector": ".multiple-item",
+    "attribute": "data-attribute",
+    "multiple": false
+  },
+  "multiple_true": {
+    "selector": ".multiple-item",
+    "multiple": true
+  },
+  "multiple_true_complex": {
+    "selector": ".multiple-item",
+    "attribute": "data-attribute",
+    "multiple": true
   }
 }

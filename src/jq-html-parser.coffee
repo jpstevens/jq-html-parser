@@ -24,6 +24,17 @@ class HTMLParser
     if typeof config is "string" then config = { selector: config }
     # get the element
     $el = @jQuery(config.selector)
+    # multiple
+    if config.multiple
+      val = []
+      parser = @
+      $el.each ->
+        val.push parser.getValueForElement parser.jQuery(@), config
+      val
+    else
+      @getValueForElement $el.first(), config
+
+  getValueForElement: ($el, config) ->
     # ignore child elements within the current $el, if specified
     $el = @getElForIgnore($el, config.ignore) if config.ignore
     # get attribute, if there is one
