@@ -1,6 +1,7 @@
-jq-html-parser
+# jq-html-parser
+
 [![Build Status](https://secure.travis-ci.org/jpstevens/jq-html-parser.png?branch=master)](https://travis-ci.org/jpstevens/jq-html-parser)
----
+
 A jQuery powered parser for extracting text (strings) from HTML documents
 
 ## Example Usage:
