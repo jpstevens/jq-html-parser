@@ -5,8 +5,8 @@ class HTMLParser
   constructor: (@selectors) ->
     # ...
 
-  setHTML: (@html) ->
-    @jQuery = JQDom @html
+  setHTML: (html) ->
+    @jQuery = JQDom html
 
   parse: (html) ->
     # set the HTML that needs to be parsed
@@ -14,14 +14,19 @@ class HTMLParser
     # parse the HTML data, for the specified selectors
     data = {}
     for selectorId, selector of @selectors
-      data[selectorId] = @getDataForSelector selector
+      val = @getDataForSelector selector
+      data[selectorId] = val unless (val is "") or (val is undefined) or (val is null)
     data
 
   getDataForSelector: (config) ->
-    # html and jQuery must have been set before getting data
-    throw new Error ("HTML is not defined") unless ( @html and @jQuery )
     # handle the case where parseSelector is called with a selector string
     if typeof config is "string" then config = { selector: config }
+    # rename regex (for legacy purposes)
+    if config.regex and not config.regexp
+      config.regexp = config.regex
+      delete config.regex
+    # throw error if selector is undefined
+    throw new Error "Selector must be defined." unless config.selector
     # get the element
     $el = @jQuery(config.selector)
     # multiple
@@ -41,20 +46,25 @@ class HTMLParser
     if config.attribute then val = @getAttribute $el, config.attribute
     else val = @getText $el
     # extract regex, if applicable
-    val = @getRegex val, config.regex if config.regex
+    val = @getRegex val, config.regexp if config.regexp
     val
 
   getElForIgnore: ($el, ignore) ->
     $el.clone().find(ignore).remove().end()
   
   getAttribute: ($el, attribute) ->
-    $el.attr(attribute).trim()
+    val = $el.attr(attribute)
+    val.trim() if val is typeof "string"
+    val
   
   getText: ($el) ->
     $el.text().trim()
 
   getRegex: (val, regex) ->
     r = new RegExp regex
-    val.match(r)[1]
+    match = val.match(r)
+    return match[1] if match
+    null
+
 
 module.exports = HTMLParser
