@@ -63,8 +63,8 @@ class HTMLParser
   getRegex: (val, regex) ->
     r = new RegExp regex
     match = val.match(r)
-    return match[1] if match
-    null
-
+    return null unless match instanceof Array
+    return match[0] if match.length is 1
+    match[1] if match.length > 1
 
 module.exports = HTMLParser
