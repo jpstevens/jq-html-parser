@@ -1,6 +1,7 @@
 # jq-html-parser
 
 [![Build Status](https://secure.travis-ci.org/jpstevens/jq-html-parser.png?branch=master)](https://travis-ci.org/jpstevens/jq-html-parser)
+![Downloads/month](http://img.shields.io/npm/dm/jq-html-parser.svg)
 
 A jQuery powered parser for extracting text (strings) from HTML documents
 
