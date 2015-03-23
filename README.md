@@ -1,15 +1,8 @@
 # jq-html-parser
 
 [![Build Status](https://secure.travis-ci.org/jpstevens/jq-html-parser.png?branch=master)](https://travis-ci.org/jpstevens/jq-html-parser)
-![Downloads/month](http://img.shields.io/npm/dm/jq-html-parser.svg)
 
 A jQuery powered parser for extracting text (strings) from HTML documents
-
-## Installation:
-
-```
-npm install jq-html-parser --save
-```
 
 ## Example Usage:
 ```javascript
@@ -26,27 +19,27 @@ config = {
   logo: {
     selector: "#hplogo",
     attribute: "style",
-    regex: "url\\(([\/A-z0-9]+.png)\\)"
+    regexp: "url\\(([\/A-z0-9]+.png)\\)"
   }
 };
 url = "http://google.co.uk";
 
 // request a page
 request.get(url, function(err, res, body){
-  
+
   // handle error and non-200 response here
   if(err || (res.statusCode != 200)){
     return console.log("An error occured.");
   }
 
-  var parser, data;
+  var parser, result;
 
   // parse body
   parser = new Parser(config);
-  data   = parser.parse(body);
+  result = parser.parse(body);
 
-  console.log(data.title); // "Google"
-  console.log(data.logo);  // "/images/srpr/logo11w.png"
+  console.log(result.title); // "Google"
+  console.log(result.logo);  // "/images/srpr/logo11w.png"
 
 });
 ```
@@ -57,117 +50,7 @@ request.get(url, function(err, res, body){
 
 The jQuery selector, used to locate the desired element.
 
-For example, if our HTML body looked like this:
-
-```html
-<h1 class='title'>My Title</h1>
-<p>Lorem ipsum dolar sit amet.</p>
-```
-
-And our parser config looked like this:
-
-```javascript
-var config;
-
-config = {
-  myElement: { selector: ".title" }
-};
-
-// or, using the short-hand version:
-
-config = { myElement: ".title" };
-
-```
-
-The parser would match the first ```.title``` element from the DOM, and assign its value to the ```myElement``` attribute:
-
-```
-var parser = new Parser(config);
-parser.parse(html); // returns { myElement: "My Title"}
-```
-
-### attribute (optional)
-
-Returns the text value of the specified attribute, for the given selector.
-
-For example, if our HTML looked like this:
-
-```html
-<h1 data-secret-title="Shh, don't tell...">Hello, world!</h1>
-```
-
-And our config looked like this:
-
-```javascript
-var config = {
-  myElement: { selector: "h1", attribute: "data-secret-title" }
-};
-```
-
-Our response would contain "Shh, don't tell...", as that is the ```data-secret-title``` attribute or the ```h1``` tag.
-
-```javascript
-var parser = new Parser(config);
-parser.parse(html); // returns { myElement: "Shh, don't tell..." }
-```
-
-### regexp (optional)
-
-Returns the text value of the specified regular expression, for a given selector.
-
-For example, if our HTML looked like this:
-
-```html
-<span class="cost">Cost: 1500</span>
-```
-
-And our config looked like this:
-
-```javascript
-var config = {
-  cost: { selector: ".cost", regexp: "Cost: (\d+)" }
-};
-```
-
-Our response would equal ```{ cost: "1500" }```, as that is the first match of the ```regexp``` expression within the ```.cost``` element:
-
-```javascript
-var parser = new Parser(config);
-parser.parse(html); // returns { cost: "1500" }
-```
-
-**NOTE:** ```regex```. can be used as an alias for ```regexp```.
-
-### ignore (optional)
-
-Returns the text value of an element for a given selector, ignoring child elements matching the ignore value's pattern.
-
-For example, if our HTML looked like this:
-
-```html
-<p>This is a great article! <span class="spam">This is spam :(</span></p>
-```
-
-And our config looked like this:
-
-```javascript
-var config = {
-  article: { selector: "p", ignore: ".spam" }
-};
-```
-
-Our response would equal ```{ article: "This is a great article!" }```, as the ```.spam``` content is being ignored.
-
-```javascript
-var parser = new Parser(config);
-parser.parse(html); // returns { article: "This is a great article!" }
-```
-
-### mulitple (optional, defaults to ```false```)
-
-Returns an array of values when set to ```true```. Otherwise returns the value of the first matching element.
-
-So if our HTML body looked like this:
+For example, if `html` equals:
 
 ```html
 <!-- head, etc. -->
@@ -177,50 +60,226 @@ So if our HTML body looked like this:
 <!-- even more html... -->
 ```
 
-And our parser config looked like this:
+And our JavaScript is:
 
 ```javascript
-var config = {
-  myElement: { selector: "h1", multiple: true }
-};
+var parser = new Parser(html);
+var result = parser.parse({
+  myElement: { selector: "h1" }
+});
 ```
 
-The parser would match all h1 elements from the DOM, and assign the array to the 'myElement' attribute:
+The parser would match the first h1 element from the DOM, and assign its value to the `myElement` attribute:
+
+```js
+// value of 'result':
+{ myElement: "Hello, world!"}
+```
+
+The parser would match all h1 elements from the DOM, and assign the array to the `myElement` attribute:
+
+**NOTE:** To return *all* h1's from the DOM, see the `multiple` option below.
+
+### multiple (optional, defaults to `false`)
+
+Returns an array of values when set to `true`. By default, or when set to `false`, will return a string containing the first value found for the specified jQuery selector.
+
+For example, if `html` equals:
+
+```html
+<!-- head, etc. -->
+<h1>Hello, world!</h1>
+<!-- more html... -->
+<h1>Another Hello!</h1>
+<!-- even more html... -->
+```
+
+And our JavaScript is:
+
+```javascript
+var parser = new Parser(html);
+var result = parser.parse({
+  myElement: { selector: "h1", multiple: true }
+});
+```
+
+The parser would match all h1 elements from the DOM, and assign the array to the `myElement` attribute:
+
+```js
+// value of 'result':
+{
+  myElement: ["Hello, world!", "Another Hello!"]
+}
+```
 
 ```javascript
 var parser = new Parser(config);
 parser.parse(html); // returns { myElement: ["Hello, world!", "Another Hello!"]}
 ```
 
-However if our parser config looked like this, with multiple not set to ```true```:
+### attribute (optional)
 
-```javascript
-var config = {
-  myElement: { selector: "h1" }
-};
+Returns the text value of the specified attribute, for the given selector.
+
+For example, if `html` equals:
+
+```html
+<!-- head, etc. -->
+<h1 data-secret-title="Shh, don't tell...">Hello, world!</h1>
+<!-- more html... -->
 ```
 
-The parser would match only the first h1 elements from the DOM:
+And our JavaScript is:
 
 ```javascript
-var parser = new Parser(config);
-parser.parse(html); // returns { myElement: "Hello, world!" }
+var parser = new Parser(html);
+var result = parser.parse({
+  myElement: { selector: "h1", attribute: "data-secret-title" }
+});
+```
+Then our result would contains "Shh, don't tell...", as that is the
+`data-secret-title` attribute of the `h1` tag:
+
+```js
+// value of 'result':
+{
+  myElement: "Shh, don't tell..."
+}
+
 ```
 
-## Combining Options:
+**NOTE** Setting the `attribute` option will ignore `remove` and `html` options, as those options relate to the inner contents of an element, and not the attribute.
 
-All options can be combined, and when being parsed they will be processed in a particular order, depending on their specificity.
+### remove (optional)
 
-If you find your returned object doesn't match what you were expecting, it may be due to conflicting configuration options.
+Specifies any descendant elements to remove before parsing the value of the selected elements.
 
-Configuration options will be evaluated in the following order:
+For example, if `html` equals:
 
-![image](https://pbs.twimg.com/media/BsyoDgzCQAAN83C.png:large)
+```html
+<!-- head, etc. -->
+<article>
+  <p>Keep me. </p>
+  <p class="advert">Annoying advert</p>
+  <p>Keep me too.</p>
+</article>
+<!-- more html... -->
+```
 
-Mmm... diagrams. 
+And our JavaScript is:
 
-## Support:
+```javascript
+var parser = new Parser(html);
+var result = parser.parse({
+  myElement: { selector: "article", remove: ".advert" }
+});
+```
 
-If you need any help, please let me know via the "issues" tab on Github.
+Then our result will contain everything inside of `article`, except the content from `.advert`:
 
-Contributions are also welcome, so please feel free to fork the code, play around, then put in a PR.
+```js
+// value of 'result':
+{
+  myElement: "Keep me. Keep me too."
+}
+```
+
+### html (optional, defaults to `false`)
+
+When set to `true`, sets return the selected element as HTML. By default, or when set to true, returns the contents of the selected element as text.
+
+For example, if `html` equals:
+
+```html
+<!-- head, etc. -->
+<article>
+  <p>I am the text</p>
+</article>
+<!-- more html... -->
+```
+
+And our JavaScript is:
+
+```javascript
+var parser = new Parser(html);
+var result = parser.parse({
+  myElement: { selector: "article", html: true }
+});
+```
+
+Then our result will be a string of HTML, instead of the text value:
+
+```js
+// value of 'result':
+{
+  myElement: "<article><p>I am the text</p></article>" // this would simply be "I am the text" if html=false
+}
+```
+
+### regexp (optional)
+
+Use regular expressions to extract data from the parsed value(s) from your selected elements. `regexp` is the second-to-last option applied to the text, before `transform`.
+
+For example, if `html` equals:
+
+```html
+<!-- head, etc. -->
+<h1>The title is 'jQuery Rocks'</h1>
+<!-- more html... -->
+```
+
+And our JavaScript is:
+
+```javascript
+var parser = new Parser(html);
+var result = parser.parse({
+  myElement: { selector: "h1", regexp: "The title is '(.*)'" }
+});
+```
+
+Then our result will be "jQuery Rocks".
+
+```js
+// value of 'result':
+{
+  myElement: "jQuery Rocks"
+}
+```
+
+**NOTE** Only the first match will be returned. For more advanced transformations, like combining multiple regular expression matches together, use the `transform` option.
+
+### transform
+
+Used to transform parsed values of selected element(s).
+
+For example, if `html` equals:
+
+```html
+<!-- head, etc. -->
+<div class="points">Total points: 21</div>
+<!-- more html... -->
+```
+
+And our JavaScript is:
+
+```javascript
+var parser = new Parser(html);
+var result = parser.parse({
+  pointsScored: {
+    selector: "h1",
+    regexp: "Total points: (.*)",
+    transform: function (val) {
+      return val ? parseInt(val) : 0;
+    }
+  }
+});
+```
+
+Then our result will be the numerical value for "points scored":
+
+```js
+// value of 'result':
+{
+  pointsScored: 21
+}
+```

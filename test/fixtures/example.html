@@ -1,22 +1,23 @@
 <html>
-<head>
-  <title>HTMLParser</title>
-</head>
-<body>
-  <div class="selector">SELECTOR</div>
-  <div class="ignore-container">
-    <span class="ignore">DON'T</span> SHOW THIS
-  </div>
-  <img class="attribute" src="http://example.com/assets/ATTRIBUTE.jpg">
-  <ul class="multiple">
-    <li class="multiple-item" data-attribute="MULTI ATTR #1">MULTIPLE #1</li>
-    <li class="multiple-item" data-attribute="MULTI ATTR #2">MULTIPLE #2</li>
-  </ul>
-  <div class="regex">This is the content: REGEX</div>
-  <div class="nested">
-    <div class="ignore-1">This shouldn't show</div>
-    <div class="ignore-2">This shouldn't show either...</div>
-    But the following part should show: IGNORE+REGEX
-  </div>
-</body>
+  <head>
+    <title>HTMLParser</title>
+  </head>
+  <body>
+    <div class="basic">BASIC</div>
+    <div class="complex">COMPLEX</div>
+    <div class="regex">This is the content: REGEX</div>
+    <img class="attribute" src="http://example.com/assets/ATTRIBUTE.jpg">
+    <div class="ignore-container">
+      <span class="ignore">DON'T</span> SHOW THIS
+    </div>
+    <div class="nested">
+      <div class="ignore-1">This shouldn't show</div>
+      <div class="ignore-2">This shouldn't show either...</div>
+      But the following part should show: IGNORE+REGEX
+    </div>
+    <ul class="multiple">
+      <li class="multiple-item" data-attribute="MULTI ATTR #1">MULTIPLE #1</li>
+      <li class="multiple-item" data-attribute="MULTI ATTR #2">MULTIPLE #2</li>
+    </ul>
+  </body>
 </html>
