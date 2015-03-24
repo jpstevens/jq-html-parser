@@ -23,6 +23,11 @@
   },
   "homepage": "https://github.com/jpstevens/jq-html-parser",
   "dependencies": {
-    "chalk": "^1.0.0"
+    "chalk": "^1.0.0",
+    "jqdom": "0.0.5"
+  },
+  "devDependencies": {
+    "chai": "^2.1.2",
+    "mocha": "^2.2.1"
   }
 }
