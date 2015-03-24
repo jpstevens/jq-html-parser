@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/jpstevens/jq-html-parser/issues"
   },
-  "homepage": "https://github.com/jpstevens/jq-html-parser"
+  "homepage": "https://github.com/jpstevens/jq-html-parser",
+  "dependencies": {
+    "chalk": "^1.0.0"
+  }
 }

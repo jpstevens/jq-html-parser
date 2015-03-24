@@ -184,7 +184,7 @@ Then our result will contain everything inside of `article`, except the content 
 }
 ```
 
-### html (optional, defaults to `false`)
+### html (optional, defaults to `false`)
 
 When set to `true`, sets return the selected element as HTML. By default, or when set to true, returns the contents of the selected element as text.
 
@@ -283,3 +283,25 @@ Then our result will be the numerical value for "points scored":
   pointsScored: 21
 }
 ```
+
+## Combining Options:
+
+All options can be combined, and when being parsed they will be processed in a particular order, depending on their specificity.
+
+If you find your returned object doesn't match what you were expecting, it may be due to conflicting configuration options.
+
+Configuration options will be evaluated in the following order:
+
+1. `selector`
+2. `multiple`
+3. `attribute`
+4. `remove` (skipped if `attribute` is defined)
+5. `html` (skipped if `attribute` is defined)
+6. `regexp`
+7. `transform`
+
+## Support
+
+If you need any help, please let me know via the "issues" tab on Github.
+
+Contributions are also welcome, so please feel free to fork the code, play around, then put in a PR.
