@@ -1,10 +1,11 @@
 require('../helper');
 
-describe('Parser', function() {
-  before(function() {
-    this.html = fs.readFileSync(path.resolve(__dirname, '../fixtures/example.html'), 'utf8');
+describe('#parse', function() {
+  before(function () {
+    var htmlPath = path.resolve(__dirname, '../fixtures/example.html');
+    this.html = fs.readFileSync(htmlPath, 'utf8');
   });
-  describe('#parse', function() {
+  describe('v0.2.1', function() {
     describe("parsing a selector string", function() {
       before(function() {
         this.parser = new Parser({
